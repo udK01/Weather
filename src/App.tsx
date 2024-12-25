@@ -10,7 +10,7 @@ interface WeatherData {
 
 function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [city, setCity] = useState("");
+  const [_, setCity] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
 
@@ -37,15 +37,11 @@ function App() {
     }
   };
 
-  function handleCity() {
-    setCity(inputValue);
-    fetchWeather(inputValue);
-  }
-
   const kelvinToCelsius = (kelvin: number) => (kelvin - 273.15).toFixed(1);
 
   return (
     <div className="h-screen bg-gray-700 flex justify-center items-center flex-col space-y-10">
+      {/* Input */}
       <div className="w-full flex justify-center items-center gap-5 bg-gray-700 text-white">
         <h1 className="flex text-[32px]">Weather in</h1>
         <input
@@ -58,14 +54,16 @@ function App() {
 
         <button
           className="bg-orange-400 text-[24px] px-10 rounded-md hover:bg-orange-600 transition-colors duration-150"
-          onClick={handleCity}
+          onClick={() => fetchWeather(inputValue)}
         >
           Search
         </button>
       </div>
 
+      {/* Error */}
       {error && <p className="text-red-500">{error}</p>}
 
+      {/* Display */}
       <div>
         {weatherData && (
           <div className="text-white">
