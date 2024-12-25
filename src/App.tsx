@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   const [city, setCity] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const fetchWeather = async (city: string): Promise<void> => {
     try {
@@ -16,25 +17,26 @@ function App() {
     }
   };
 
-  useEffect(() => {
+  function handleCity() {
+    setCity(inputValue);
     fetchWeather(city);
-  }, [city]);
+  }
 
   return (
-    <div className="w-full h-screen flex justify-center items-center flex-col space-y-10 bg-sky-700">
-      <h1 className="flex text-[32px] text-white">
-        {city !== "" ? (
-          <>
-            Weather in <p className="ml-2 text-orange-500">{city}</p>
-          </>
-        ) : (
-          <>
-            Please Enter A City<p className="text-orange-500">.</p>
-          </>
-        )}
-      </h1>
-      <input type="text" placeholder="Enter city" />
-      <button className="bg-orange-400 text-[24px] px-10 rounded-md hover:bg-orange-600 transition-colors duration-150">
+    <div className="w-full h-screen flex justify-center items-center gap-5 bg-gray-700 text-white">
+      <h1 className="flex text-[32px]">Weather in</h1>
+      <input
+        id="cityInput"
+        type="text"
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Enter City"
+        className="w-[250px] h-[40px] text-[24px] text-center rounded-lg bg-transparent ring-2 ring-black focus:ring-orange-500 focus:outline-none"
+      />
+
+      <button
+        className="bg-orange-400 text-[24px] px-10 rounded-md hover:bg-orange-600 transition-colors duration-150"
+        onClick={handleCity}
+      >
         Search
       </button>
     </div>
