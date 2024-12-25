@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function App() {
-  const [city, setCity] = useState("Swansea");
+  const [city, setCity] = useState("");
 
   const fetchWeather = async (city: string): Promise<void> => {
     try {
@@ -21,14 +21,22 @@ function App() {
   }, [city]);
 
   return (
-    <div>
-      <h1>Weather in {city}</h1>
-      <input
-        type="text"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        placeholder="Enter city"
-      />
+    <div className="w-full h-screen flex justify-center items-center flex-col space-y-10 bg-sky-700">
+      <h1 className="flex text-[32px] text-white">
+        {city !== "" ? (
+          <>
+            Weather in <p className="ml-2 text-orange-500">{city}</p>
+          </>
+        ) : (
+          <>
+            Please Enter A City<p className="text-orange-500">.</p>
+          </>
+        )}
+      </h1>
+      <input type="text" placeholder="Enter city" />
+      <button className="bg-orange-400 text-[24px] px-10 rounded-md hover:bg-orange-600 transition-colors duration-150">
+        Search
+      </button>
     </div>
   );
 }
