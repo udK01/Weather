@@ -1,16 +1,9 @@
 import { useState } from "react";
-
-interface WeatherData {
-  name: string;
-  weather: Array<{ description: string }>;
-  main: { temp: number; feels_like: number; humidity: number };
-  wind: { speed: number };
-  sys: { country: string; flagUrl: string };
-}
+import WeatherCard from "./WeatherCard";
+import { WeatherData } from "./WeatherData";
 
 function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [_, setCity] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
 
@@ -25,7 +18,6 @@ function App() {
       const data = await response.json();
 
       if (data.cod === 200) {
-        data.sys.flagUrl = `https://flagcdn.com/w320/${data.sys.country.toLowerCase()}.png`;
         setWeatherData(data);
         setError("");
       } else {
@@ -64,18 +56,12 @@ function App() {
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Display */}
-      <div>
-        {weatherData && (
-          <div className="text-white">
-            <p>Weather: {weatherData.weather[0].description}</p>
-            <p>Temperature: {kelvinToCelsius(weatherData.main.temp)}°C</p>
-            <p>Feels Like: {kelvinToCelsius(weatherData.main.feels_like)}°C</p>
-            <p>Humidity: {weatherData.main.humidity}%</p>
-            <p>Wind Speed: {weatherData.wind.speed} m/s</p>
-            <img src={`${weatherData.sys.flagUrl}`} />
-          </div>
-        )}
-      </div>
+      {weatherData && (
+        <WeatherCard
+          weatherData={weatherData}
+          kelvinToCelsius={kelvinToCelsius}
+        />
+      )}
     </div>
   );
 }
